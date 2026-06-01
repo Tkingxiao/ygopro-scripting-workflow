@@ -1,0 +1,16 @@
+﻿node.exe : PASS tests/sample.spec.ts
+所在位置 行:1 字符: 1
++ & 'C:\Program Files\nodejs\node.exe' 'node_modules\jest\bin\jest.js'  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/sample.spec.ts:String) 
+    [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Sample test.
+    鈭?should pass (2 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        1.705 s
+Ran all test suites matching tests/sample.spec.ts.

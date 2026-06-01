@@ -1,0 +1,54 @@
+stages:
+  - install
+  - build
+  - deploy
+
+variables:
+  GIT_DEPTH: "1"
+
+npm_ci:
+  stage: install
+  tags:
+    - linux
+  script:
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules
+
+fetch_ygopro:
+  stage: install
+  tags:
+    - linux
+  script:
+    - mkdir ygopro
+    - git clone --depth 1 --branch master https://code.moenext.com/nanahira/ygopro-database ygopro-database
+    - cd ygopro
+    - mv ../ygopro-database/locales/zh-CN/cards.cdb .
+    - git clone --depth 1 --branch master https://code.moenext.com/nanahira/ygopro-scripts script
+  artifacts:
+    paths:
+      - ygopro
+
+.build_base:
+  stage: build
+  tags:
+    - linux
+  dependencies:
+    - npm_ci
+    - fetch_ygopro
+
+# build:
+#   extends:
+#     - .build_base
+#   script:
+#     - npm run build
+#   artifacts:
+#     paths:
+#       - dist/
+
+unit-test:
+  extends:
+    - .build_base
+  script:
+    - npm run test

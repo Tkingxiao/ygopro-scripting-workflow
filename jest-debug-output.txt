@@ -1,0 +1,186 @@
+﻿  console.warn
+    Aborted()
+
+      at abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:1245:3)
+      at _abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:4081:7)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:806664)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:804043)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802969)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802392)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:801960)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:941132)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:782489)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:286678)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:443468)
+      at Object.Module._start_duel (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:4392:78)
+      at _OcgcoreDuel.startDuel (../node_modules/koishipro-core.js/src/ocgcore-duel.ts:81:39)
+      at YGOProTest.createDuelFromRaw (../node_modules/ygopro-jstest/src/ygopro-test.ts:87:15)
+      at YGOProTest.createDuel (../node_modules/ygopro-jstest/src/ygopro-test.ts:95:12)
+      at new YGOProTest (../node_modules/ygopro-jstest/src/ygopro-test.ts:53:10)
+      at createYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts:60:10)
+      at useYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts:73:16)
+      at Object.<anonymous> (workspace\瀹為獙\c11602456.spec.ts:15:5)
+
+  console.warn
+    Aborted()
+
+      at abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:1245:3)
+      at _abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:4081:7)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:806664)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:804043)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802969)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802392)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:801960)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:941132)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:782489)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:286678)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:443468)
+      at Object.Module._start_duel (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:4392:78)
+      at _OcgcoreDuel.startDuel (../node_modules/koishipro-core.js/src/ocgcore-duel.ts:81:39)
+      at YGOProTest.createDuelFromRaw (../node_modules/ygopro-jstest/src/ygopro-test.ts:87:15)
+      at YGOProTest.createDuel (../node_modules/ygopro-jstest/src/ygopro-test.ts:95:12)
+      at new YGOProTest (../node_modules/ygopro-jstest/src/ygopro-test.ts:53:10)
+      at createYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts:60:10)
+      at useYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts:73:16)
+      at Object.<anonymous> (workspace\瀹為獙\c11602456.spec.ts:43:5)
+
+  console.warn
+    Aborted()
+
+      at abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:1245:3)
+      at _abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:4081:7)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:806664)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:804043)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802969)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802392)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:801960)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:941132)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:782489)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:286678)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:443468)
+      at Object.Module._start_duel (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgcore.cjs:4392:78)
+      at _OcgcoreDuel.startDuel (../node_modules/koishipro-core.js/src/ocgcore-duel.ts:81:39)
+      at YGOProTest.createDuelFromRaw (../node_modules/ygopro-jstest/src/ygopro-test.ts:87:15)
+      at YGOProTest.createDuel (../node_modules/ygopro-jstest/src/ygopro-test.ts:95:12)
+      at new YGOProTest (../node_modules/ygopro-jstest/src/ygopro-test.ts:53:10)
+      at createYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts:60:10)
+      at useYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts:73:16)
+      at Object.<anonymous> (workspace\瀹為獙\c11602456.spec.ts:70:5)
+
+node.exe : FAIL tests\workspace\瀹為獙\c11602456.spec.ts
+所在位置 行:1 字符: 79
++ ... ow-master'; & 'C:\Program Files\nodejs\node.exe' 'node_modules\jest\b ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (FAIL tests\work...1602456.spec.ts 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  c11602456
+    脳 should validate banish-and-add filter (89 ms)
+    脳 should validate deck special summon filter (41 ms)
+    脳 should add a banished set monster to hand when banished from GY (44 ms)
+
+  鈼?c11602456 鈥?should validate banish-and-add filter
+
+    RuntimeError: Aborted(). Build with -s ASSERTIONS=1 for more info.
+
+      at abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgco
+re.cjs:1262:11)
+      at _abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgc
+ore.cjs:4081:7)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:806664)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:804043)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802969)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802392)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:801960)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:941132)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:782489)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:286678)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:443468)
+      at Object.Module._start_duel (../node_modules/koishipro-core.js/dist/vend
+or/wasm_cjs/libocgcore.cjs:4392:78)
+      at _OcgcoreDuel.startDuel (../node_modules/koishipro-core.js/src/ocgcore-
+duel.ts:81:39)
+      at YGOProTest.createDuelFromRaw (../node_modules/ygopro-jstest/src/ygopro
+-test.ts:87:15)
+      at YGOProTest.createDuel (../node_modules/ygopro-jstest/src/ygopro-test.t
+s:95:12)
+      at new YGOProTest (../node_modules/ygopro-jstest/src/ygopro-test.ts:53:10
+)
+      at createYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test
+.ts:60:10)
+      at useYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts
+:73:16)
+      at Object.<anonymous> (workspace\瀹為獙\c11602456.spec.ts:15:5)
+
+  鈼?c11602456 鈥?should validate deck special summon filter
+
+    RuntimeError: Aborted(). Build with -s ASSERTIONS=1 for more info.
+
+      at abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgco
+re.cjs:1262:11)
+      at _abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgc
+ore.cjs:4081:7)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:806664)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:804043)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802969)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802392)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:801960)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:941132)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:782489)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:286678)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:443468)
+      at Object.Module._start_duel (../node_modules/koishipro-core.js/dist/vend
+or/wasm_cjs/libocgcore.cjs:4392:78)
+      at _OcgcoreDuel.startDuel (../node_modules/koishipro-core.js/src/ocgcore-
+duel.ts:81:39)
+      at YGOProTest.createDuelFromRaw (../node_modules/ygopro-jstest/src/ygopro
+-test.ts:87:15)
+      at YGOProTest.createDuel (../node_modules/ygopro-jstest/src/ygopro-test.t
+s:95:12)
+      at new YGOProTest (../node_modules/ygopro-jstest/src/ygopro-test.ts:53:10
+)
+      at createYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test
+.ts:60:10)
+      at useYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts
+:73:16)
+      at Object.<anonymous> (workspace\瀹為獙\c11602456.spec.ts:43:5)
+
+  鈼?c11602456 鈥?should add a banished set monster to hand when banished from GY
+
+    RuntimeError: Aborted(). Build with -s ASSERTIONS=1 for more info.
+
+      at abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgco
+re.cjs:1262:11)
+      at _abort (../node_modules/koishipro-core.js/dist/vendor/wasm_cjs/libocgc
+ore.cjs:4081:7)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:806664)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:804043)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802969)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:802392)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:801960)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:941132)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:782489)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:286678)
+      at null.<anonymous> (../wasm:/wasm/0041d832:1:443468)
+      at Object.Module._start_duel (../node_modules/koishipro-core.js/dist/vend
+or/wasm_cjs/libocgcore.cjs:4392:78)
+      at _OcgcoreDuel.startDuel (../node_modules/koishipro-core.js/src/ocgcore-
+duel.ts:81:39)
+      at YGOProTest.createDuelFromRaw (../node_modules/ygopro-jstest/src/ygopro
+-test.ts:87:15)
+      at YGOProTest.createDuel (../node_modules/ygopro-jstest/src/ygopro-test.t
+s:95:12)
+      at new YGOProTest (../node_modules/ygopro-jstest/src/ygopro-test.ts:53:10
+)
+      at createYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test
+.ts:60:10)
+      at useYGOProTest (../node_modules/ygopro-jstest/src/create-ygopro-test.ts
+:73:16)
+      at Object.<anonymous> (workspace\瀹為獙\c11602456.spec.ts:70:5)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 3 total
+Snapshots:   0 total
+Time:        1.932 s, estimated 2 s
+Ran all test suites matching tests/workspace/瀹為獙/c11602456.spec.ts.

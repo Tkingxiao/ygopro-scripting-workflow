@@ -1,0 +1,130 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "run-tests",
+			"type": "shell",
+			"command": "cmd.exe /c \"set PATH=C:\\Program Files\\nodejs;C:\\Program Files\\Git\\cmd;%PATH% && npm test --silent\"",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"& {Set-Location 'c:\\Users\\Lenovo\\Downloads\\ygopro-scripting-workflow-master'; cmd.exe /c \"set PATH=C:\\Program Files\\nodejs;C:\\Program Files\\Git\\cmd;%PATH% && npm test --silent\"}"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests",
+			"type": "shell",
+			"command": "cmd.exe",
+			"args": [
+				"/c",
+				"cd /d c:\\Users\\Lenovo\\Downloads\\ygopro-scripting-workflow-master && set PATH=C:\\Program Files\\nodejs;C:\\Program Files\\Git\\cmd;%PATH% && npm test --silent"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests",
+			"type": "shell",
+			"command": "cmd.exe",
+			"args": [
+				"/c",
+				"cd /d c:\\Users\\Lenovo\\Downloads\\ygopro-scripting-workflow-master && \"C:\\Program Files\\nodejs\\npm.cmd\" test --silent"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests-unique-1",
+			"type": "shell",
+			"command": "cmd.exe",
+			"args": [
+				"/c",
+				"cd /d c:\\Users\\Lenovo\\Downloads\\ygopro-scripting-workflow-master && \"C:\\Program Files\\nodejs\\npm.cmd\" test --silent"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests-unique-2",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location 'c:\\Users\\Lenovo\\Downloads\\ygopro-scripting-workflow-master'; & 'C:\\Program Files\\nodejs\\npm.cmd' test --silent"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests-unique-3",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location 'c:\\Users\\Lenovo\\Downloads\\ygopro-scripting-workflow-master'; & C:\\Progra~1\\nodejs\\npm.cmd test --silent"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests-unique-4",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location 'c:\\Users\\Lenovo\\Downloads\\ygopro-scripting-workflow-master'; $env:Path = 'C:\\Progra~1\\nodejs;' + $env:Path; & C:\\Progra~1\\nodejs\\npm.cmd test --silent"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests-script",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-File",
+				"run-tests.ps1"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-tests-script-bypass",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"run-tests.ps1"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "cleanup-run-tests-script",
+			"type": "shell",
+			"command": "cmd.exe",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Lenovo\\Downloads\\ygopro-scripting-workflow-master\" && del run-tests.ps1"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
