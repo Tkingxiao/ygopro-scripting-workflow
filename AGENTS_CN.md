@@ -124,6 +124,12 @@ rg --files workspace -g '*.cdb'  # 查找 workspace 中所有 .cdb 文件
 | 破坏 | Destroy | `CATEGORY_DESTROY` |
 | 1回合1次 | Once per turn | `SetCountLimit(1, id)` |
 | 这个卡名的效果1回合只能使用1次 | This card's effects can only be used once per turn | 所有效果使用 `SetCountLimit(1, id)` |
+| 从自己的额外卡组把1只表侧表示的灵摆怪兽特殊召唤 | Special Summon 1 face-up Pendulum Monster from your Extra Deck | 额外卡组灵摆怪兽的区域放置规则适用（见 §6） |
+| 灵摆区 | Pendulum Zone | `LOCATION_PZONE` (0x200) — 魔陷区 seq 0（左）和 seq 4（右）各一个 |
+| 灵摆刻度 | Pendulum Scale | `c:GetLeftScale()` / `c:GetRightScale()` |
+| 灵摆召唤 | Pendulum Summon | `SUMMON_TYPE_PENDULUM` (0x4a000000) |
+| 额外卡组的灵摆怪兽 | Extra Deck Pendulum Monster | `TYPE_PENDULUM` (0x1000000) + `LOCATION_EXTRA` + 表侧表示 |
+| 连接箭头 | Link Marker | `LINK_MARKER_*` 常量 — 定义连接怪兽所连接的区域 |
 
 ### 解析效果文本
 
@@ -226,6 +232,163 @@ rg --files workspace -g '*.cdb'  # 查找 workspace 中所有 .cdb 文件
 - `aux.Stringid(id, 0)` → `texts.str1`
 - `aux.Stringid(id, 1)` → `texts.str2`
 - 使用 `ygopro-cdb-encode` 编辑 `.cdb`，永远不要手编
+
+#### 额外卡组灵摆怪兽的区域放置规则
+从额外卡组特殊召唤灵摆怪兽（灵摆召唤或卡片效果）时，该怪兽**只能**放置在**连接怪兽所连接的区域**（额外怪兽区域或被连接怪兽指向的主怪兽区域）。如果没有有效区域，该怪兽**送入墓地**。
+
+**适用情况：**
+- 额外卡组表侧表示灵摆怪兽的灵摆召唤
+- 卡片效果从额外卡组特殊召唤，文本包含"从自己的额外卡组把1只表侧表示的灵摆怪兽特殊召唤"
+
+**区域布局（从操控者视角）：**
+- MZone seq 0–4：主怪兽区域（列 0–4）
+- MZone seq 5：额外怪兽区域左侧（列 1）
+- MZone seq 6：额外怪兽区域右侧（列 3）
+
+**区域检查关键 API：**
+- `c:GetLinkedZone(tp)` — 返回 `c` 连接的区域位掩码（对玩家 `tp`）
+- `Duel.GetLinkedZone(tp)` — 返回场上所有连接怪兽为玩家 `tp` 连接的区域
+- `Auxiliary.GetMultiLinkedZone(tp)` — 返回被 2+ 个连接怪兽连接的区域
+- `Duel.GetLocationCount(tp, LOCATION_MZONE)` — 可用的主怪兽区域
+- `Duel.GetLocationCount(tp, LOCATION_MZONE, g)` — 解放 `g` 后检查可用区域
+- `LOCATION_REASON_TOFIELD = 0x1` — `GetLocationCount` 的默认原因（场上放置）
+- `c:IsInExtraMZone()` — 检查卡片是否在额外怪兽区域
+- `c:IsInMainMZone()` — 检查卡片是否在主怪兽区域
+
+**区域位掩码常量：**
+- `0x1`–`0x1f`：主怪兽区域 seq 0–4（列 0–4）
+- `0x20`：额外怪兽区域 seq 5（左侧，列 1）
+- `0x40`：额外怪兽区域 seq 6（右侧，列 3）
+- `0x7f`：所有怪兽区域
+
+**`Duel.SelectField` 的 filter 参数约定：** `filter` 参数是**排除掩码** — 位为 1 的区域被排除在选择之外。要仅从连接区域选择，使用 `~zone`（反转连接区域位掩码）。例如：`zone = 0x20`（EMZ 左），则 `~zone & 0x7f` 选择所有其他区域。
+
+**额外卡组灵摆怪兽放置的脚本模式：**
+```lua
+-- 在 target/operation 中，放置额外卡组灵摆怪兽时：
+local zone = Duel.GetLinkedZone(tp)
+if zone == 0 then
+    -- 没有有效区域 — 怪兽送墓
+    Duel.SendtoGrave(c, REASON_RULE)
+else
+    -- 从连接区域中选择
+    Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_SPSUMMON)
+    local seq = Duel.SelectField(tp, 1, LOCATION_MZONE, 0, ~zone)
+    Duel.SpecialSummon(c, 0, tp, tp, false, false, POS_FACEUP, seq)
+end
+```
+
+**参考：** `ygopro/ocgcore/field.cpp`（`field::pendulum_summon`）、`ygopro/ocgcore/operations.cpp`、`ygopro/script/utility.lua`（`Auxiliary.GetMultiLinkedZone`）
+
+#### 灵摆区机制
+灵摆区是魔陷区的一部分：
+- `LOCATION_PZONE = 0x200` — 每个玩家两个区域：seq 0（左）和 seq 4（右）
+- 灵摆怪兽放置在灵摆区时，视为**永续魔法**（不是怪兽）
+- 灵摆刻度：`c:GetLeftScale()` 和 `c:GetRightScale()`
+- 灵摆怪兽可以同时存在于怪兽区和灵摆区（灵摆区的灵摆怪兽视为魔法卡）
+
+**灵摆刻度与放置关键 API：**
+- `c:IsPendulumMonster()` — 检查是否为灵摆怪兽
+- `c:IsPendulumSetable()` — 检查灵摆怪兽是否可以放置到灵摆区
+- `c:SetPendulum()` — 将灵摆怪兽放置到灵摆区（视为永续魔法）
+- `c:GetLeftScale()` — 获取左灵摆刻度值
+- `c:GetRightScale()` — 获取右灵摆刻度值
+- `Duel.GetPendulumCount(tp)` — 获取玩家灵摆区的灵摆怪兽数量
+
+#### 连接怪兽的区域连接
+连接怪兽通过连接箭头定义所连接的区域。这些区域决定了额外卡组灵摆怪兽可以放置的位置。
+
+**连接箭头常量**（来自 `constant.lua`）：
+| 常量 | 方向 | 位掩码 |
+|------|------|--------|
+| `LINK_MARKER_BOTTOM_LEFT` | ↙ | `0x001` |
+| `LINK_MARKER_BOTTOM` | ↓ | `0x002` |
+| `LINK_MARKER_BOTTOM_RIGHT` | ↘ | `0x004` |
+| `LINK_MARKER_LEFT` | ← | `0x008` |
+| `LINK_MARKER_RIGHT` | → | `0x020` |
+| `LINK_MARKER_TOP_LEFT` | ↖ | `0x040` |
+| `LINK_MARKER_TOP` | ↑ | `0x080` |
+| `LINK_MARKER_TOP_RIGHT` | ↗ | `0x100` |
+
+**区域连接关系：**
+- 连接怪兽的箭头定义了它"指向"的区域（其连接的区域）
+- `c:GetLinkedZone(tp)` 返回 `c` 为玩家 `tp` 连接的区域位掩码
+- 额外卡组灵摆怪兽**只能**放置在连接怪兽指向的区域
+- 如果场上没有连接怪兽，或没有可用的连接区域，额外卡组灵摆怪兽无法特殊召唤，送入墓地
+
+**相关区域封锁效果：**
+- `EFFECT_USE_EXTRA_MZONE` (261) — 封锁额外怪兽区域
+- `EFFECT_USE_EXTRA_SZONE` (262) — 封锁魔陷区
+- `EFFECT_MAX_MZONE` (263) — 限制可用怪兽区域数
+- `EFFECT_MAX_SZONE` (264) — 限制可用魔陷区数
+- `EFFECT_MUST_USE_MZONE` (265) — 强制使用特定怪兽区域
+
+#### 灵摆召唤类型与手续
+灵摆召唤是内置的召唤手续，不是卡片效果：
+- `SUMMON_TYPE_PENDULUM = 0x4a000000` — 用于 `Card.IsSummonType()` 检查
+- `EFFECT_SPSUMMON_PROC_G = 320` — 灵摆召唤手续效果
+- `EFFECT_EXTRA_PENDULUM_SUMMON = 360` — 额外灵摆召唤（额外的灵摆召唤次数）
+- `EVENT_SPSUMMON_SUCCESS_G_P = 1117` — 灵摆召唤成功事件（仅永续效果）
+
+**灵摆怪兽类型标志：**
+- `TYPE_PENDULUM = 0x1000000` — 灵摆怪兽类型位
+- 检查：`c:IsType(TYPE_PENDULUM)` 或 `c:GetOriginalType() & TYPE_PENDULUM ~= 0`
+
+#### 灵摆相关重定向效果
+灵摆怪兽离场时，根据其状态可能去往不同区域：
+- `EFFECT_TO_GRAVE_REDIRECT` (63) — 从墓地重定向（如额外卡组表侧灵摆怪兽进入灵摆区）
+- `EFFECT_TO_DECK_REDIRECT` (62) — 从卡组重定向
+- `EFFECT_LEAVE_FIELD_REDIRECT` (60) — 离场时重定向
+- `EFFECT_TO_HAND_REDIRECT` (61) — 回手牌时重定向
+- `EFFECT_REMOVE_REDIRECT` (64) — 从除外重定向
+- `EFFECT_BATTLE_DESTROY_REDIRECT` (204) — 战斗破坏时重定向
+- `EFFECT_TO_GRAVE_REDIRECT_CB` (313) — 条件重定向（如宝玉兽）
+
+**重要：** 当额外卡组的表侧表示灵摆怪兽将被送去墓地时，它会被放置到灵摆区（除非灵摆区已满）。这是"额外卡组灵摆怪兽 → 灵摆区"重定向的核心规则。
+
+#### 灵摆相关事件
+| 事件 | 含义 |
+|------|------|
+| `EVENT_SPSUMMON_SUCCESS_G_P = 1117` | 灵摆召唤成功（仅永续效果） |
+| `EVENT_SPSUMMON_PROC_G = 320` | 灵摆召唤手续 |
+
+#### 脚本编写陷阱与规则
+
+##### `REASON_RULE` 不触发诱发效果
+`Duel.SendtoGrave(c, REASON_RULE)` 不会触发 `EVENT_DESTROYED` 或 `EVENT_TO_GRAVE` 的效果。仅在核心规则自身移动卡片时使用（如额外卡组灵摆怪兽无可用区域）。
+
+##### 里侧表示卡片的取对象限制
+取对象效果（`EFFECT_FLAG_CARD_TARGET`）通常不能选择里侧表示卡片，除非效果文本明确写明"里侧表示的卡"。在取对象过滤器中添加 `c:IsFaceup()`。
+
+##### 非取对象选择需要 `HintSelection`
+在 `operation` 中 `Duel.SelectMatchingCard()` 之后，必须调用 `Duel.HintSelection(g)` 记录选择。不调用的话，某些卡片不会被记录为"被选择"。
+
+##### 同名卡全局发动限制
+"同名卡1回合只能发动1次"需要使用 `Duel.GetCustomActivityCount(id, tp, ACTIVITY_ACTIVATE)` — 它检查整个决斗历史，不仅限于场上。
+
+##### 取对象效果的关联检查
+在 `operation` 中处理取对象时，必须检查 `tc:IsRelateToEffect(e)`。如果对象在连锁处理中被移动，`IsRelateToEffect` 返回 `false`，不应再操作该对象。
+
+##### 顺序处理（"那之后"）
+"那之后"表示第一个操作必须完全执行完毕后，才能执行第二个操作。先检查第一个操作的结果（如 `g:FilterCount(Card.IsLocation, nil, LOCATION_GRAVE) > 0`），再继续。
+
+##### 伤害步骤中的发动限制
+伤害步骤中，通常只有以下效果可以发动：
+- 攻守变动效果
+- 反击陷阱
+- 明确写明"伤害步骤"的效果
+- 包含变更表示形式的效果
+
+使用 `EFFECT_FLAG_DAMAGE_STEP` 允许在伤害步骤发动，或在 `condition` 中用 `Duel.IsDamageStep()` 限制。
+
+##### `EFFECT_TYPE_FIELD` 与触发事件的组合
+场地效果使用 `EFFECT_TYPE_FIELD` 时，如需在特定事件触发，须同时设置 `EFFECT_TYPE_FIELD` 和 `EFFECT_TYPE_TRIGGER_O/F`。例：`e1:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_TRIGGER_O)`。
+
+##### 额外卡组灵摆怪兽为公开信息
+额外卡组的表侧表示灵摆怪兽是公开信息，对方可以查看。脚本中通过 `LOCATION_EXTRA` 配合 `Card.IsFaceup()` 过滤。
+
+##### `aux.TRUE` / `aux.FALSE` 便捷过滤器
+`utility.lua` 提供了快速匹配所有卡片的过滤器：`aux.TRUE`（匹配所有）和 `aux.FALSE`（匹配无）。
 
 ---
 
@@ -407,13 +570,31 @@ npm run lint  # 编辑 .spec.ts 后
 | `tc:IsRelateToEffect(e)` | 检查对象是否仍相关 |
 | `Duel.HintSelection(g)` | 提示玩家选择 |
 | `Duel.NegateEffect(ev)` | 无效连锁效果 |
-| `Duel.SpecialSummon(c, sumtype, tp, tp, ...)` | 特殊召唤卡片 |
+| `Duel.SpecialSummon(c, sumtype, tp, tp, nocheck, nolimit, pos, seq)` | 特殊召唤卡片（含区域放置） |
 | `Duel.Destroy(c, reason)` | 破坏卡片 |
 | `Duel.SendtoDeck(c, tp, seq, reason)` | 回到卡组 |
 | `Duel.Remove(c, pos, reason)` | 除外 |
 | `Duel.Draw(tp, count, reason)` | 抽卡 |
 | `Duel.Recover(tp, count, reason)` | 回复 LP |
 | `Duel.Damage(tp, count, reason)` | 造成伤害 |
+| `Card:GetLinkedZone(tp)` | 此连接怪兽连接的区域 |
+| `Duel.GetLinkedZone(tp)` | 场上所有连接怪兽为该玩家连接的区域 |
+| `Card:IsInExtraMZone()` | 检查是否在额外怪兽区域 |
+| `Card:IsInMainMZone()` | 检查是否在主怪兽区域 |
+| `Duel.SelectField(tp, count, loc1, loc2, filter)` | 选择场地区域 |
+| `Card:IsPendulumMonster()` | 检查是否为灵摆怪兽 |
+| `Card:IsPendulumSetable()` | 检查是否可以放置到灵摆区 |
+| `Card:SetPendulum()` | 放置到灵摆区 |
+| `Card:GetLeftScale()` | 获取左灵摆刻度 |
+| `Card:GetRightScale()` | 获取右灵摆刻度 |
+| `Card:IsCanAddCounter(counter, count)` | 检查是否可以放置指示物 |
+| `Duel.GetPendulumCount(tp)` | 获取灵摆区的灵摆怪兽数量 |
+| `Duel.GetLocationCount(tp, loc)` | 可用区域数 |
+| `Duel.GetCustomActivityCount(id, tp, act)` | 活动计数器检查 |
+| `c:IsCanBeSpecialSummoned(e, sumtype, tp, nocheck, nolimit, pos)` | 检查是否可以特殊召唤 |
+| `c:IsCanTurnSet()` | 检查是否可以变为里侧表示 |
+| `c:IsFaceup()` | 检查是否表侧表示 |
+| `c:IsFacedown()` | 检查是否里侧表示 |
 
 ---
 
